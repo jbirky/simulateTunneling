@@ -1,16 +1,3 @@
-#include <iostream>
-#include <fstream>
-#include <complex>
-#include <string>
-#include <vector>
-#include <math.h>
-#include <cblas.h>
-using namespace std;
-
-
-typedef complex<double> cdouble;
-typedef vector<cdouble> matrix;
-
 
 // ===================================
 // MATRIX/VECTOR OPERATION FUNCTIONS
