@@ -77,7 +77,7 @@ vector<cdouble> matrixMatrixMultiply(vector<cdouble> m1, vector<cdouble> m2) {
 
 vector<cdouble> matrixVectorMultiply(vector<cdouble> m1, vector<cdouble> m2) {
 
-    int D = m1.size();
+    int D = m2.size();
 
 	vector<cdouble> prod(D,0);
 
