@@ -16,6 +16,7 @@ double 	potential(double x);
 
 // Path Integral Functions
 matrix 			returnKep();
+vector<cdouble> phiInit();
 matrix 			returnPropagator();							// return propagator matrix at time step N
 void			saveWaveFunctions();						// save wave functions, probability amplitudes, and expected values at each time step
 vector<double> 	returnProbability(vector<cdouble> wf);		// return wave function squared
@@ -46,7 +47,17 @@ int main()
 
 	// ========================================= 
 
-	cout<<D<<endl;
+	// matrix K = returnPropagator();
+	// printMatrixC(K);
+	// string save_K = "prop_matrix/Kprop.dat";
+	// saveFileC(K, save_K);
+
+	matrix phi0 = phiInit();
+	vector<double> phi0_sq = returnProbability(phi0);
+	string save_phi0_prob = "wave_prob/phi_sq0.dat";
+	saveFileR(phi0_sq, save_phi0_prob);
+
+	// saveWaveFunctions();
 
 	// =========================================
 
@@ -73,7 +84,7 @@ vector<cdouble> phiInit()
 	vector<cdouble> phi0(D,0);
 
 	for (int i=0; i<D; i++) {
-		phi0[i] = pow(ALPHA/PI, .25) * exp(-ALPHA * pow((x(i) - XS), 2) /2);
+		phi0[i] = 1 / (ALPHA * sqrt(2*PI)) * ( exp(-pow((x(i) - BETA),2) / (2*pow(ALPHA,2))) - exp(-pow((x(i) + BETA),2) / (2*pow(ALPHA,2))) );
 	}
 
 	return phi0;
@@ -86,12 +97,6 @@ double potential(double x)
 
 	return V;
 }
-
-
-// ===================================
-// MONTE CARLO 
-// ===================================
-
 
 
 // ===================================
@@ -113,7 +118,6 @@ matrix returnKep()
 		for (int j=0; j<D; j++) {
 
 			efactor = I*DEL_T/h * (.5*m*pow((x(j)-x(i))/DEL_T, 2) - potential(pow(((x(j)+x(i))/2.), 2)));
-			// cout<<exp(efactor)<<endl;
 
 			Kep[i*D + j] = exp(efactor) / A;
 		}
