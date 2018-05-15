@@ -7,11 +7,13 @@ rc('font', family='serif')
 rc('figure', facecolor='w')
 import os
 import math
-from math import sqrt, pi, exp, pow
+from math import sqrt, pi, exp
 import argparse
+import shutil
 
-ALPHA = 1
+V_ALPHA = .02
 BETA  = 2
+XMIN = 2.5
 
 
 def potential(x):
@@ -19,8 +21,8 @@ def potential(x):
 	pot = []
 	for i in range(len(x)):
 
-		# pot.append(1 / (ALPHA * sqrt(2*pi)) * ( exp(-pow((x[i] - BETA),2) / (2*pow(ALPHA,2))) + exp(-pow((x[i] + BETA),2) / (2*pow(ALPHA,2))) ))
-		pot.append(ALPHA * pow(x[i], 4) - BETA * pow(x[i], 2) + pow(BETA, 2) / (4*ALPHA))
+		# pot.append(ALPHA * x[i]**4 - BETA * x[i]**2 + BETA**2 / (4*ALPHA))
+		pot.append(V_ALPHA * (x[i]**2 - XMIN**2)**2)
 
 	return pot
 
@@ -30,11 +32,14 @@ if __name__ == '__main__':
 
 	parser = argparse.ArgumentParser(description='Specify plotting directory.')
 	parser.add_argument("folder", action="store", type=str)
+	# parser.add_argument("show", action="store", type=bool)
 	args = parser.parse_args()
 
 
 	# Plot expected values for each time step
 	if 'expected' in args.folder:
+
+		print('Plotting expected values.')
 
 		exp_files = os.listdir('expected/')
 
@@ -82,6 +87,8 @@ if __name__ == '__main__':
 	# Plot probability functions 
 	if 'wave_prob' in args.folder:
 
+		print('Plotting wave amplitudes.')
+
 		try:
 			avg_eng_array = []
 			with open('expected/avg_eng.dat') as f:
@@ -89,7 +96,7 @@ if __name__ == '__main__':
 						avg_eng_array.append(float(line))
 
 			avg_eng_val = np.mean(avg_eng_array)
-			show_eng = True
+			show_eng = False
 		except:
 			show_eng = False
 
@@ -102,7 +109,7 @@ if __name__ == '__main__':
 					vals.append(float(line))
 			vals = np.array(vals)
 
-			xvals = np.linspace(-3, 3, len(vals))
+			xvals = np.linspace(-6, 6, len(vals))
 
 			fname = file.split('.dat')[0]
 			num = fname.split('phi_sq')[1]
@@ -114,8 +121,8 @@ if __name__ == '__main__':
 				plt.axhline(y=avg_eng_val, linestyle='--', color='b', alpha=.4, label=r'$<E>$')
 			else:
 				plt.plot(xvals, vals, label=r'$t_{s} = %s$'%(num), color='r')
-			plt.axvline(x=sqrt(BETA/(2*ALPHA)), linestyle='--', color='k', alpha=.4)
-			plt.axvline(x=-sqrt(BETA/(2*ALPHA)), linestyle='--', color='k', alpha=.4)
+			plt.axvline(x=XMIN, linestyle='--', color='k', alpha=.4)
+			plt.axvline(x=-XMIN, linestyle='--', color='k', alpha=.4)
 
 			plt.ylim([-.2, 1.2])
 			plt.xlabel(r'$x$', fontsize=15)
@@ -123,6 +130,6 @@ if __name__ == '__main__':
 			plt.legend(loc='upper right')
 			plt.title('Wave Probability Amplitude', fontsize=18)
 			plt.savefig('plots/phi/' + fname + '.png')
-			plt.show()
+			# plt.show()
 			plt.close()
 

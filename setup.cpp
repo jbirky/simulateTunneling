@@ -16,20 +16,29 @@ typedef vector<cdouble> matrix;
 // DEFINE PROBLEM CONSTANTS
 // ===================================
 
-int		D 	= 601; 				// number of grid points
-int 	N 	= 1; 				// number of time steps
+// Physical constants
 double	h	= 1;
 double	m 	= 1;
 double	w	= 1;
-double	X0	= -4;				// min x range
-double	XD	= 4;				// max s range
 double 	PI  = 3.14159265358;	
-double	T0 	= 2 * PI;
-int 	P 	= 32;
-double	T 	= T0/16;						// period
-double	DEL_T 	= T0 / 128;				// time step size
+
+// Grid parameters
+int		D 	= 601; 						// number of grid points
+double	X0	= -6;						// min x range
+double	XD	= 6;						// max s range
 double	DEL_X	= (XD - X0)/(D - 1);	// spatial step size
 
+// Time evolution parameters
+int 	N 	= 55; 						// number of time steps per K matrix
+double	T0 	= 2 * PI;
+int 	P 	= 8;
+double	T 	= T0/16;					// period
+double	DEL_T = T0 / 128;				// time step size
+
+// Intitial phi parameters
+double P_ALPHA = 1;
+double XMIN	   = 2.5;
+
 // Double well potential parameters
-double	ALPHA	= 1;
+double	V_ALPHA	= .02;
 double 	BETA 	= 2;

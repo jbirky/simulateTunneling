@@ -52,12 +52,18 @@ int main()
 	// string save_K = "prop_matrix/Kprop.dat";
 	// saveFileC(K, save_K);
 
-	matrix phi0 = phiInit();
-	vector<double> phi0_sq = returnProbability(phi0);
-	string save_phi0_prob = "wave_prob/phi_sq0.dat";
-	saveFileR(phi0_sq, save_phi0_prob);
+	// matrix phi0 = normalizeWF(phiInit());
+	// vector<double> phi0_sq = returnProbability(phi0);
+	// string save_phi0_prob = "wave_prob/phi_sq0.dat";
+	// saveFileR(phi0_sq, save_phi0_prob);
 
-	// saveWaveFunctions();
+	saveWaveFunctions();
+
+
+	// matrix Kep = returnKep();
+	// cout<<Kep.size()<<endl;
+	// matrix K = matrixMatrixMultiply(Kep, Kep);
+	// printMatrixC(K);
 
 	// =========================================
 
@@ -84,7 +90,9 @@ vector<cdouble> phiInit()
 	vector<cdouble> phi0(D,0);
 
 	for (int i=0; i<D; i++) {
-		phi0[i] = 1 / (ALPHA * sqrt(2*PI)) * ( exp(-pow((x(i) - BETA),2) / (2*pow(ALPHA,2))) - exp(-pow((x(i) + BETA),2) / (2*pow(ALPHA,2))) );
+		// phi0[i]  = 1 / (P_ALPHA * sqrt(2*PI)) * ( exp(-pow((x(i) - BETA),2) / (2.0*pow(P_ALPHA,2))) + exp(-pow((x(i) + BETA),2) / (2.0*pow(P_ALPHA,2))) );
+		// phi0[i] += 1 / (P_ALPHA * sqrt(2*PI)) * ( exp(-pow((x(i) - BETA),2) / (2.0*pow(P_ALPHA,2))) - exp(-pow((x(i) + BETA),2) / (2.0*pow(P_ALPHA,2))) ); 
+		phi0[i] = exp(-m*pow(w,2) / (2*m) * pow((x(i)-XMIN), 2));
 	}
 
 	return phi0;
@@ -93,7 +101,9 @@ vector<cdouble> phiInit()
 
 double potential(double x)
 {
-	double V = ALPHA * pow(x, 4) + BETA * pow(x, 2) + pow(BETA, 2) / (4*ALPHA);
+	// double V = V_ALPHA * pow(x, 4) + BETA * pow(x, 2) + pow(BETA, 2) / (4*V_ALPHA);
+
+	double V = V_ALPHA * exp(pow((pow(x,2) - pow(XMIN,2)), 2));
 
 	return V;
 }
@@ -102,7 +112,6 @@ double potential(double x)
 // ===================================
 // CREATE PROPAGATOR MATRIX
 // ===================================
-
 
 matrix returnKep()
 {
@@ -117,7 +126,7 @@ matrix returnKep()
 	for (int i=0; i<D; i++) {
 		for (int j=0; j<D; j++) {
 
-			efactor = I*DEL_T/h * (.5*m*pow((x(j)-x(i))/DEL_T, 2) - potential(pow(((x(j)+x(i))/2.), 2)));
+			efactor = I*DEL_T/h * (.5*m*pow((x(j)-x(i))/DEL_T, 2) - potential(((x(j)+x(i))/2.)));
 
 			Kep[i*D + j] = exp(efactor) / A;
 		}
