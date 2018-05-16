@@ -92,7 +92,7 @@ vector<cdouble> phiInit()
 	for (int i=0; i<D; i++) {
 		// phi0[i]  = 1 / (P_ALPHA * sqrt(2*PI)) * ( exp(-pow((x(i) - BETA),2) / (2.0*pow(P_ALPHA,2))) + exp(-pow((x(i) + BETA),2) / (2.0*pow(P_ALPHA,2))) );
 		// phi0[i] += 1 / (P_ALPHA * sqrt(2*PI)) * ( exp(-pow((x(i) - BETA),2) / (2.0*pow(P_ALPHA,2))) - exp(-pow((x(i) + BETA),2) / (2.0*pow(P_ALPHA,2))) ); 
-		phi0[i] = exp(-m*pow(w,2) / (2*m) * pow((x(i)-XMIN), 2));
+		phi0[i] = exp(-P_ALPHA/2 * pow((x(i)-XMIN), 2));
 	}
 
 	return phi0;
@@ -103,7 +103,7 @@ double potential(double x)
 {
 	// double V = V_ALPHA * pow(x, 4) + BETA * pow(x, 2) + pow(BETA, 2) / (4*V_ALPHA);
 
-	double V = V_ALPHA * exp(pow((pow(x,2) - pow(XMIN,2)), 2));
+	double V = V_ALPHA * pow((pow(x,2) - pow(XMIN,2)), 2);
 
 	return V;
 }

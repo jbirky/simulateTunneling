@@ -29,14 +29,14 @@ double	XD	= 6;						// max s range
 double	DEL_X	= (XD - X0)/(D - 1);	// spatial step size
 
 // Time evolution parameters
-int 	N 	= 55; 						// number of time steps per K matrix
+int 	N 	= 8; 						// number of time steps per K matrix
 double	T0 	= 2 * PI;
-int 	P 	= 8;
+int 	P 	= 200;
 double	T 	= T0/16;					// period
 double	DEL_T = T0 / 128;				// time step size
 
 // Intitial phi parameters
-double P_ALPHA = 1;
+double P_ALPHA = 1.25;
 double XMIN	   = 2.5;
 
 // Double well potential parameters

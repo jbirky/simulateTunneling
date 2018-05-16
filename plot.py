@@ -74,10 +74,14 @@ if __name__ == '__main__':
 			fname = file.split('.dat')[0]
 
 			plt.plot(tstep, vals, label=fname, alpha=.8)
-		plt.xlim(0,16)
+
+		plt.axhline(y=XMIN, linestyle='--', color='k', alpha=.4, label=r'$\pm x_{min}$')
+		plt.axhline(y=-XMIN, linestyle='--', color='k', alpha=.4)
+
+		# plt.xlim(0,16)
 		plt.xlabel('Timestep', fontsize=15)
 		plt.ylabel('Expected Value', fontsize=15)
-		plt.legend(loc='lower right')
+		plt.legend(loc='lower left', fontsize=12)
 		plt.title('Expected values vs. Time', fontsize=18)
 		plt.savefig('plots/expected.png')
 		# plt.show()
@@ -96,7 +100,7 @@ if __name__ == '__main__':
 						avg_eng_array.append(float(line))
 
 			avg_eng_val = np.mean(avg_eng_array)
-			show_eng = False
+			show_eng = True
 		except:
 			show_eng = False
 
@@ -115,21 +119,39 @@ if __name__ == '__main__':
 			num = fname.split('phi_sq')[1]
 
 			plt.figure(figsize=[12,8])
-			plt.plot(xvals, potential(xvals), color='k', alpha=.8, label=r'$V(x) = \alpha x^4 - \beta x^2 + \frac{\beta^2}{4 \alpha}$')
+			plt.plot(xvals, potential(xvals), color='k', alpha=.8, label=r'$V(x) = \alpha (x^2 - x_{min}^2)^2$')
 			if show_eng == True:
-				plt.plot(xvals, vals + avg_eng_val, label=r'$t_{s} = %s$'%(num), color='r')
+				plt.plot(xvals, vals + avg_eng_val, label=r'$|\Psi(x,t_{s} = %s)|^{2}$'%(num), color='r')
 				plt.axhline(y=avg_eng_val, linestyle='--', color='b', alpha=.4, label=r'$<E>$')
 			else:
 				plt.plot(xvals, vals, label=r'$t_{s} = %s$'%(num), color='r')
 			plt.axvline(x=XMIN, linestyle='--', color='k', alpha=.4)
 			plt.axvline(x=-XMIN, linestyle='--', color='k', alpha=.4)
+			plt.text(-5.8, 1.13, r'$\alpha=%s$, $x_{min}=%s$'%(str(V_ALPHA), str(XMIN)))
 
-			plt.ylim([-.2, 1.2])
+			plt.ylim([-.1, 1.2])
 			plt.xlabel(r'$x$', fontsize=15)
 			plt.ylabel(r'$|\Psi(x,t)|^{2}$', fontsize=15)
-			plt.legend(loc='upper right')
+			plt.legend(loc='lower right')
 			plt.title('Wave Probability Amplitude', fontsize=18)
 			plt.savefig('plots/phi/' + fname + '.png')
 			# plt.show()
 			plt.close()
 
+
+	if 'fourier' in args.folder:
+
+		from scipy.fftpack import fft
+
+		array = []
+		with open('expected/avg_pos.dat') as f:
+			for line in f:
+				array.append(float(line))
+
+		ft = fft(array)
+		tstep = np.arange(0,len(ft),1)
+
+		plt.xlim(0,20)
+		plt.plot(tstep, ft)
+		plt.savefig('plots/pos_fourier.png')
+		plt.close()
