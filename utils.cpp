@@ -104,3 +104,19 @@ vector<cdouble> vectorVectorMultiply(vector<cdouble> m1, vector<cdouble> m2) {
 
     return prod;
 }
+
+
+cdouble trace(matrix K) {
+
+    cdouble tr_sum;
+
+    for (int i=0; i<D; i++) {
+        for (int j=0; j<D; j++) {
+            if (i==j) {
+                tr_sum += K[i*D + j];
+            }
+        }
+    }
+
+    return tr_sum;
+}

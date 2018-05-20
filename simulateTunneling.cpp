@@ -32,6 +32,8 @@ double  printMatrixR(vector<double> k); 					// print real matrix
 void 	saveFileC(vector<cdouble> vec, string save_name);	// save complex matrix
 void 	saveFileR(vector<double> vec,  string save_name);	// save real matrix
 
+cdouble trace(matrix K);									// return trace of complex matrix
+
 vector<cdouble> matrixMatrixMultiply(vector<cdouble> m1, vector<cdouble> m2);
 vector<cdouble> matrixVectorMultiply(vector<cdouble> m1, vector<cdouble> m2);
 vector<cdouble> vectorVectorMultiply(vector<cdouble> m1, vector<cdouble> m2);
