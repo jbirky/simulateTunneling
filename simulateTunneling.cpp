@@ -105,9 +105,7 @@ double potential(double x)
 {
 	// double V = V_ALPHA * pow(x, 4) + BETA * pow(x, 2) + pow(BETA, 2) / (4*V_ALPHA);
 
-	// double V = V_ALPHA * pow((pow(x,2) - pow(XMIN,2)), 2);
-
-	double V = 0;
+	double V = V_ALPHA * pow((pow(x,2) - pow(XMIN,2)), 2);
 
 	return V;
 }
